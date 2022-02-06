@@ -1,12 +1,13 @@
-const puppeteer = require("puppeteer");
+// import puppeteer from 'puppeteer';
 
-(async () => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto("https://news.ycombinator.com", {
-    waitUntil: "networkidle2",
-  });
-  await page.pdf({ path: "hn.pdf", format: "a4" });
+require('dotenv').config();
 
-  await browser.close();
-})();
+console.log(process.env); // remove this after you've confirmed it working
+// (async () => {
+//   const browser = await puppeteer.launch();
+//   const page = await browser.newPage();
+//   await page.goto('https://example.com');
+//   await page.screenshot({ path: 'example.png' });
+
+//   await browser.close();
+// })();
