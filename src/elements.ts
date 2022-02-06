@@ -1,5 +1,6 @@
 const elements = {
-  loginBtn: 'div#login-with-epic',
+  signInLink: 'li[data-component="SignIn"]',
+  loginWithEpicBtn: 'div#login-with-epic',
 
   email: 'input#email',
   pass: 'input#password',
