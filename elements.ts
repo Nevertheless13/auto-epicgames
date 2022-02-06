@@ -6,4 +6,4 @@ const elements = {
   signInBtn: 'button#sign-in',
 };
 
-module.exports = elements;
+export default elements;
