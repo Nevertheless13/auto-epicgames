@@ -1,9 +1,6 @@
 import puppeteer from 'puppeteer';
 import { logProcess, logSuccess, logError } from '../utils/logger';
-
-const waitForOptions = {
-  visible: true,
-};
+import { waitForOptions } from './login';
 
 const getGame = async (page: puppeteer.Page) => {
   logProcess('going to free game');
