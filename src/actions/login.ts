@@ -27,14 +27,13 @@ const login = async (page: puppeteer.Page) => {
 
   logProcess('setting credentials');
   await page.waitForSelector(elements.email);
-  await page.type(elements.email, process.env.EMAIL as string);
+  await page.type(elements.email, process.env.EMAIL as string, {
+    delay: 100,
+  });
   await page.waitForSelector(elements.pass);
-  await page.type(elements.pass, process.env.PASSWORD as string);
-
-  logProcess('waiting for log in now button');
-  await page.waitForFunction(
-    `document.querySelector("${elements.signInBtn} span span").innerText.toLowerCase() == "log in now" `
-  );
+  await page.type(elements.pass, process.env.PASSWORD as string, {
+    delay: 100,
+  });
 
   logProcess('logging in');
   await page.click(elements.signInBtn);
