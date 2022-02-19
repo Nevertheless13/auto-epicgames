@@ -9,8 +9,7 @@ import StealthPlugin from 'puppeteer-extra-plugin-stealth';
   puppeteer.use(StealthPlugin());
 
   const browser = await puppeteer.launch({
-    headless: true,
-    // headless: false,
+    headless: !true,
     defaultViewport: {
       height: 1080,
       width: 1920,
