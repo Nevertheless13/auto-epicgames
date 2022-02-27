@@ -1,13 +1,19 @@
 import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 import { logProcess, logSuccess, logError } from './utils/logger';
 import login from './actions/login';
 import getGame from './actions/getGame';
-import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 (async () => {
-  puppeteer.use(StealthPlugin());
+  const today = new Date();
+  if (today.getDay() <= 4) {
+    // run only on friday and saturday
+    logError('will only run on friday and saturday');
+    return;
+  }
 
+  puppeteer.use(StealthPlugin());
   const browser = await puppeteer.launch({
     headless: !true,
     defaultViewport: {
@@ -15,7 +21,6 @@ import StealthPlugin from 'puppeteer-extra-plugin-stealth';
       width: 1920,
     },
   });
-
   const page = await browser.newPage();
   await page.goto('https://www.epicgames.com/store/en-US/free-games');
 
