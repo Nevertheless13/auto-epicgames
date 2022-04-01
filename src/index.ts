@@ -1,9 +1,11 @@
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
+import { LAUNCH_OPTIONS } from './utils/constants';
 import { logProcess, logSuccess, logError } from './utils/logger';
 import login from './actions/login';
 import getGame from './actions/getGame';
+import getGameUrls from './actions/getGameUrls';
 
 (async () => {
   const today = new Date();
@@ -14,19 +16,16 @@ import getGame from './actions/getGame';
   }
 
   puppeteer.use(StealthPlugin());
-  const browser = await puppeteer.launch({
-    headless: !true,
-    defaultViewport: {
-      height: 1080,
-      width: 1920,
-    },
-  });
+  const browser = await puppeteer.launch(LAUNCH_OPTIONS);
   const page = await browser.newPage();
   await page.goto('https://www.epicgames.com/store/en-US/free-games');
 
   try {
     await login(page);
-    await getGame(page);
+    const gameUrls = await getGameUrls(page);
+    for (const gameUrl of gameUrls) {
+      await getGame(page, gameUrl);
+    }
   } catch (error) {
     logError('error. Check below');
     console.log(error);

@@ -1,16 +1,15 @@
 import puppeteer from 'puppeteer';
+import { WAITFOR_OPTIONS, BASE_URL } from '../utils/constants';
 import { logProcess, logSuccess, logError } from '../utils/logger';
-import { waitForOptions } from './login';
 
-const getGame = async (page: puppeteer.Page) => {
-  logProcess('going to free game');
-  await page.waitForSelector('a[aria-label*="Free Now"] div', waitForOptions);
-  await page.click('a[aria-label*="Free Now"] div');
+const getGame = async (page: puppeteer.Page, freeGameUrl: string) => {
+  logProcess(`navigating to ${freeGameUrl}`);
+  await page.goto(freeGameUrl);
 
   logProcess('checking the game status');
   await page.waitForSelector(
     'button[data-testid="purchase-cta-button"]',
-    waitForOptions
+    WAITFOR_OPTIONS
   );
   const alreadyHaveGame = await page.evaluate(() => {
     const elem = document.querySelector(
@@ -29,15 +28,12 @@ const getGame = async (page: puppeteer.Page) => {
   logProcess('opening modal');
   const iFrameModal = await page.waitForSelector(
     '#webPurchaseContainer > iframe',
-    {
-      ...waitForOptions,
-      timeout: 90000,
-    }
+    WAITFOR_OPTIONS
   );
   const contentFrame = await iFrameModal?.contentFrame();
   const placeOrderBtn = await contentFrame?.waitForSelector(
     'button.payment-btn',
-    waitForOptions
+    WAITFOR_OPTIONS
   );
   logProcess('clicking place order');
   await placeOrderBtn?.click();
@@ -45,7 +41,7 @@ const getGame = async (page: puppeteer.Page) => {
   logProcess('finalizing order');
   await page.waitForSelector(
     'div[data-component="PostPurchaseModal"]',
-    waitForOptions
+    WAITFOR_OPTIONS
   );
   logSuccess('successfully got game');
 };
