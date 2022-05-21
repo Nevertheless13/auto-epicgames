@@ -1,8 +1,9 @@
+import fs from 'fs';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 import { LAUNCH_OPTIONS } from './utils/constants';
-import { logProcess, logSuccess, logError } from './utils/logger';
+import { logProcess, logSuccess, logError, allMsgs } from './utils/logger';
 import login from './actions/login';
 import getGame from './actions/getGame';
 import getGameUrls from './actions/getGameUrls';
@@ -27,11 +28,19 @@ import getGameUrls from './actions/getGameUrls';
       await getGame(page, gameUrl);
     }
   } catch (error) {
+    const finalError = error as Error;
+
     logError('error. Check below');
-    console.log(error);
+    console.log(finalError);
+    allMsgs.push(finalError.message);
+    allMsgs.push(finalError.stack as string);
   } finally {
     logProcess('closing browser');
     await browser.close();
     logSuccess('successfully closed browser');
+
+    fs.writeFile('result.log', allMsgs.join('\n'), (error) => {
+      if (error) throw error;
+    });
   }
 })();

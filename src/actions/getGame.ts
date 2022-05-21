@@ -1,5 +1,5 @@
 import puppeteer from 'puppeteer';
-import { WAITFOR_OPTIONS, BASE_URL } from '../utils/constants';
+import { WAITFOR_OPTIONS } from '../utils/constants';
 import { logProcess, logSuccess, logError } from '../utils/logger';
 
 const getGame = async (page: puppeteer.Page, freeGameUrl: string) => {

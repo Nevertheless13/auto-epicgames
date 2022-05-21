@@ -1,8 +1,8 @@
 import puppeteer from 'puppeteer';
 import { WAITFOR_OPTIONS } from '../utils/constants';
-import { logProcess, logSuccess, logError } from '../utils/logger';
+import { logProcess, logSuccess } from '../utils/logger';
 
-require('dotenv').config();
+import 'dotenv/config';
 
 const elements = {
   signInLink: 'li[data-component="SignIn"]',
@@ -14,6 +14,13 @@ const elements = {
 };
 
 const login = async (page: puppeteer.Page) => {
+  if (process.env.EMAIL === undefined) {
+    throw new Error('email is undefined');
+  }
+  if (process.env.PASSWORD === undefined) {
+    throw new Error('password is undefined');
+  }
+
   logProcess('clicking sign in link');
   await page.waitForSelector(elements.signInLink, WAITFOR_OPTIONS);
   await page.click(elements.signInLink);
@@ -24,11 +31,11 @@ const login = async (page: puppeteer.Page) => {
 
   logProcess('setting credentials');
   await page.waitForSelector(elements.email, WAITFOR_OPTIONS);
-  await page.type(elements.email, process.env.EMAIL as string, {
+  await page.type(elements.email, process.env.EMAIL, {
     delay: 100,
   });
   await page.waitForSelector(elements.pass, WAITFOR_OPTIONS);
-  await page.type(elements.pass, process.env.PASSWORD as string, {
+  await page.type(elements.pass, process.env.PASSWORD, {
     delay: 100,
   });
 

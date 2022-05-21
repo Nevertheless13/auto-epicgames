@@ -1,6 +1,5 @@
 node_modules
 
-# lock
 yarn.lock
 
 .env
@@ -8,3 +7,5 @@ yarn.lock
 *.png
 
 cookies.json
+
+*.log
