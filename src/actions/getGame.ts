@@ -6,6 +6,20 @@ const getGame = async (page: puppeteer.Page, freeGameUrl: string) => {
   logProcess(`navigating to ${freeGameUrl}`);
   await page.goto(freeGameUrl);
 
+  const continueBtn =
+    '[data-component="PDPAgeGate"] [data-component="BaseButton"]';
+  await page.waitForTimeout(5000);
+  const continueBtnExists = await page.evaluate(
+    () =>
+      !!document.querySelector(
+        '[data-component="PDPAgeGate"] [data-component="BaseButton"]'
+      )
+  );
+  if (continueBtnExists) {
+    logProcess('clicking 18+ continue btn');
+    await page.click(continueBtn);
+  }
+
   logProcess('checking the game status');
   await page.waitForSelector(
     'button[data-testid="purchase-cta-button"]',
