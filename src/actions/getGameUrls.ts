@@ -3,8 +3,7 @@ import { BASE_URL, WAITFOR_OPTIONS } from '../utils/constants';
 import { logProcess, logSuccess } from '../utils/logger';
 
 const getGameUrls = async (page: puppeteer.Page) => {
-  const linkElems =
-    'a[role="link"] [data-component="StatusBar"] span[data-component="Message"]';
+  const linkElems = 'a[role="link"] div div div div span';
   const baseUrl = BASE_URL;
 
   logProcess('getting free games urls');
