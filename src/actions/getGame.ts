@@ -53,10 +53,7 @@ const getGame = async (page: puppeteer.Page, freeGameUrl: string) => {
   await placeOrderBtn?.click();
 
   logProcess('finalizing order');
-  await page.waitForSelector(
-    'div[data-component="PostPurchaseModal"]',
-    WAITFOR_OPTIONS
-  );
+  await page.waitForSelector('div[role="dialog"]', WAITFOR_OPTIONS);
   logSuccess('successfully got game');
 };
 
